@@ -4,43 +4,44 @@ from test_new_model import process_frame, CameraStream
 from pymongo import MongoClient
 from datetime import datetime
 from flask_cors import CORS
-app = Flask(__name__)
-CORS(app) 
+from api import get_latest_10_data 
 
-app = Flask(__name__, static_folder="../frontend/template", static_url_path="")
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 # mở camera
-rtsp_url = "http://192.168.1.27:8080/video"
-stream = CameraStream(rtsp_url)
-rtsp_url2 = "http://192.168.1.27:8080/video"
-stream2 = CameraStream(rtsp_url2)
+# rtsp_url = "http://192.168.1.27:8080/video"
+# stream = CameraStream(rtsp_url)
+# rtsp_url2 = "http://192.168.1.27:8080/video"
+# stream2 = CameraStream(rtsp_url2)
 
-def generate_frames(stream):
-    while True:
-        ret, frame = stream.read()
-        if not ret:
-            continue
+# def generate_frames(stream):
+#     while True:
+#         ret, frame = stream.read()
+#         if not ret:
+#             continue
 
-        # xử lý frame bằng plate.py
-        frame, detected_plates, has_plate = process_frame(frame, 0.3)
+#         # xử lý frame bằng plate.py
+#         frame, detected_plates, has_plate = process_frame(frame, 0.3)
 
-        # encode sang JPEG để stream
-        ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
+#         # encode sang JPEG để stream
+#         ret, buffer = cv2.imencode('.jpg', frame)
+#         frame = buffer.tobytes()
 
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+#         yield (b'--frame\r\n'
+#                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route("/")
 def index():
     return send_from_directory(app.static_folder, "index.html")
 
-@app.route("/video")
-def video():
-    return Response(generate_frames(stream), mimetype="multipart/x-mixed-replace; boundary=frame")
-@app.route("/video2")
-def video2():
-    return Response(generate_frames(stream2), mimetype="multipart/x-mixed-replace; boundary=frame")
+# @app.route("/video")
+# def video():
+#     return Response(generate_frames(stream), mimetype="multipart/x-mixed-replace; boundary=frame")
+# @app.route("/video2")
+# def video2():
+#     return Response(generate_frames(stream2), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 # kết nối MongoDB
 client = MongoClient("mongodb://localhost:27017")
@@ -155,6 +156,12 @@ def latest_plates():
     """Trả về danh sách biển số mới nhất để frontend cập nhật"""
     return jsonify(latest_result) 
 
+@app.route("/dataNew" , methods=["GET"])
+def data_new():
+    data_result = get_latest_10_data()
+    if data_result is None:
+        return jsonify("không có data")
+    return jsonify(data_result)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

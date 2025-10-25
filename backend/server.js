@@ -107,7 +107,7 @@ app.put("/quanly/edit/:id", async (req, res) => {
 });
 //
 // ✅ Chạy server
-const PORT = 5000;
+const PORT = 5001;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   connectDB(); // Kết nối DB khi server khởi động

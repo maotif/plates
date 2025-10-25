@@ -36,11 +36,9 @@ def error_status(doc, state):
     if state==True:
         doc["error"]= "xe đã vào trước đó"
         data.insert_one(doc)
-        print("da vao")
     else:
         doc["error"]= "xe đã ra trước đó"
         data.insert_one(doc)
-        print("da ra")
 
 def save_plate(doc, newdoc,status):
     document_id = doc["_id"]
@@ -51,12 +49,10 @@ def save_plate(doc, newdoc,status):
     if status==True:
         newdoc["statue"] = "vao"
         newdoc["error"] = ""
-        parking.insert_one(newdoc)
     else:
         newdoc["statue"] = "ra"
         newdoc["error"] = ""
         delete_query = {"bien_so": doc["bien_so"]}
-        parking.delete_one(delete_query)
     data.insert_one(newdoc)
     update_op = {
         "$set": {
@@ -65,7 +61,6 @@ def save_plate(doc, newdoc,status):
         }
     }
     employees.update_one(query, update_op)
-    print("da luu")
 
 def noData_plate(line1,line2,trangthai):
     plate_number = int(line2)
@@ -79,11 +74,8 @@ def noData_plate(line1,line2,trangthai):
     }
     if trangthai==True:
         doc_new["statue"] = "vao"
-        parking.insert_one(doc_new)
     else:
         doc_new["statue"] = "ra"
-        delete_query = {"bien_so": doc_new["bien_so"]}
-        parking.delete_one(delete_query)
     data.insert_one(doc_new)
 
 def example_plate(line1,line2,trangthai):
@@ -106,6 +98,7 @@ def example_plate(line1,line2,trangthai):
                 return True
         else:
             save_plate(doc,new_doc, trangthai)
+            return False
 
     else:
         query = {"bien_so": plate_number}
@@ -156,3 +149,4 @@ def example_status(line1,line2,trangthai):
                 return False
             else:
                 return True
+            

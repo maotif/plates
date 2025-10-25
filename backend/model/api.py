@@ -14,6 +14,19 @@ parking = db["parking"]
 out = db["plates_out"]
 employees = db["employees"]
 
+def get_latest_10_data():
+    """Lấy 10 bản ghi mới nhất trong bảng data"""
+    # Sắp xếp theo thời gian giảm dần (mới nhất trước), giới hạn 10 bản ghi
+    docs = list(plates.find().sort("time", -1).limit(10))
+
+    # Chuyển ObjectId và datetime sang string để JSON hoá dễ dàng
+    for doc in docs:
+        doc["_id"] = str(doc["_id"])
+        if "time" in doc:
+            doc["time"] = doc["time"].isoformat()
+    
+    return docs
+
 def edit_home(new_data):
     print("data",new_data)
     try:
