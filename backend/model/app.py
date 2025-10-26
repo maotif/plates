@@ -4,43 +4,45 @@ from test_new_model import process_frame, CameraStream
 from pymongo import MongoClient
 from datetime import datetime
 from flask_cors import CORS
-app = Flask(__name__)
-CORS(app) 
+from api import get_latest_10_data ,edit_home
 
-app = Flask(__name__, static_folder="../frontend/template", static_url_path="")
+
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 # mở camera
-rtsp_url = "http://192.168.1.27:8080/video"
-stream = CameraStream(rtsp_url)
-rtsp_url2 = "http://192.168.1.27:8080/video"
-stream2 = CameraStream(rtsp_url2)
+# rtsp_url = "http://192.168.1.27:8080/video"
+# stream = CameraStream(rtsp_url)
+# rtsp_url2 = "http://192.168.1.27:8080/video"
+# stream2 = CameraStream(rtsp_url2)
 
-def generate_frames(stream):
-    while True:
-        ret, frame = stream.read()
-        if not ret:
-            continue
+# def generate_frames(stream,status):
+#     while True:
+#         ret, frame = stream.read()
+#         if not ret:
+#             continue
 
-        # xử lý frame bằng plate.py
-        frame, detected_plates, has_plate = process_frame(frame, 0.3)
+#         # xử lý frame bằng plate.py
+#         frame, detected_plates, has_plate = process_frame(frame,status, 0.3)
 
-        # encode sang JPEG để stream
-        ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
+#         # encode sang JPEG để stream
+#         ret, buffer = cv2.imencode('.jpg', frame)
+#         frame = buffer.tobytes()
 
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+#         yield (b'--frame\r\n'
+#                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route("/")
 def index():
     return send_from_directory(app.static_folder, "index.html")
 
-@app.route("/video")
-def video():
-    return Response(generate_frames(stream), mimetype="multipart/x-mixed-replace; boundary=frame")
-@app.route("/video2")
-def video2():
-    return Response(generate_frames(stream2), mimetype="multipart/x-mixed-replace; boundary=frame")
+# @app.route("/video")
+# def video():
+#     return Response(generate_frames(stream,status), mimetype="multipart/x-mixed-replace; boundary=frame")
+# @app.route("/video2")
+# def video2():
+#     return Response(generate_frames(stream2,status), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 # kết nối MongoDB
 client = MongoClient("mongodb://localhost:27017")
@@ -119,41 +121,25 @@ def info():
 ############### Lưu biển số mới nhất #################
 latest_result = None  # danh sách lưu các biển số nhận dạng được gần nhất
 
+get_newdata = None
 @app.route("/update_plate", methods=["POST"])
-def update_plate():
-    """Nhận biển số từ test_new_model.py"""
-    global latest_result
+def get_data():
+    global get_data
+    get_newdata = get_latest_10_data()
+    return(get_newdata)
+
+@app.route("/dataNew" , methods=["GET"])
+def data_new():
+    data = get_data()
+    if data is None:
+        return jsonify("không có data")
+    return jsonify(data)
+# edit information plates
+@app.route("/api/home/edit" , methods=["PUT"])
+def edit_inf_Home():
     data = request.json
-    plate = data.get("plate")
-    if not plate:
-        return jsonify({"error": "Thiếu dữ liệu"}), 400
-
-        # ✅ Tìm trong MongoDB nhân viên có trường xe trùng biển số
-    found = collection.find_one({"xe": plate})
-
-    if found:
-        found["_id"] = str(found["_id"])  # chuyển ObjectId sang string để JSON hóa
-        found["time"] = datetime.utcnow().isoformat()
-        found["status"] = "nhân viên"
-        latest_result = found
-    else:
-        # Không tìm thấy → thêm bản ghi "người lạ"
-        latest_result = {
-            "plate": plate,
-            "status": "người lạ",
-            "time": datetime.utcnow().isoformat()
-        }
-
-    # Giới hạn lưu tối đa 20 bản ghi gần nhất
-    
-    return jsonify({"status": "ok"})
-
-@app.route("/latest_plates")
-def latest_plates():
-    if latest_result is None:
-        return jsonify({"plate": None, "status": "chưa có dữ liệu"})
-    """Trả về danh sách biển số mới nhất để frontend cập nhật"""
-    return jsonify(latest_result) 
+    end_edit = edit_home(data)
+    return jsonify(end_edit)
 
 
 if __name__ == "__main__":
