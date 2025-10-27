@@ -27,18 +27,12 @@
   </head>
 
   <body>
-    <!-- ============================================================== -->
-    <!-- Preloader - style you can find in spinners.css -->
-    <!-- ============================================================== -->
     <div class="preloader">
       <div class="lds-ripple">
         <div class="lds-pos"></div>
         <div class="lds-pos"></div>
       </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- Main wrapper - style you can find in pages.scss -->
-    <!-- ============================================================== -->
     <div
       id="main-wrapper"
       data-navbarbg="skin6"
@@ -47,10 +41,6 @@
       data-sidebartype="full"
       data-boxed-layout="full"
     >
-      <!-- ============================================================== -->
-      <!-- ============================================================== -->
-      <!-- Left Sidebar - style you can find in sidebar.scss  -->
-      <!-- ============================================================== -->
       <aside class="left-sidebar" data-sidebarbg="skin5" style="padding: 0px">
         <!-- Sidebar scroll-->
         <div class="scroll-sidebar">
@@ -93,16 +83,7 @@
         </div>
         <!-- End Sidebar scroll-->
       </aside>
-      <!-- ============================================================== -->
-      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-      <!-- ============================================================== -->
-      <!-- ============================================================== -->
-      <!-- Page wrapper  -->
-      <!-- ============================================================== -->
       <div class="page-wrapper">
-        <!-- ============================================================== -->
-        <!-- Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-5 align-self-center">
@@ -124,16 +105,14 @@
             </div>
           </div>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Container fluid  -->
-        <!-- ============================================================== -->
         <div class="col-12" style="padding-bottom: 5px">
           <div class="card">
             <div class="card-body">
-              <a href="/quanly/add" class="btn btn-success" style="color: white"
+              <a
+                href="#"
+                id="add-btn"
+                class="btn btn-success"
+                style="color: white"
                 >Thêm nhân viên</a
               >
             </div>
@@ -146,8 +125,9 @@
                     <th scope="col">Hình đại diện</th>
                     <th scope="col">Cấp bậc</th>
                     <th scope="col">Chức vụ</th>
-                    <!-- <th scope="col">Địa vị</th> -->
-                    <th scope="col">Biển số xe</th>
+                    <th scope="col">Mã khu vực</th>
+                    <th scope="col">Số xe</th>
+                    <th scope="col">Trạng thái</th>
                     <th scope="col">Hành động</th>
                   </tr>
                 </thead>
@@ -156,24 +136,8 @@
             </div>
           </div>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- End footer -->
-        <!-- ============================================================== -->
       </div>
-      <!-- ============================================================== -->
-      <!-- End Page wrapper  -->
-      <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
     <script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="../../assets/libs/popper.js/dist/umd/popper.min.js"></script>
@@ -193,5 +157,6 @@
     <script src="../../dist/js/pages/dashboards/dashboard1.js"></script>
     <!-- QUANLY.js -->
     <script src="./quanly.js"></script>
+    <script src="./add.js"></script>
   </body>
 </html>

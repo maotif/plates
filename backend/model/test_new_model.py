@@ -38,6 +38,8 @@ class CameraStream:
 
 
 # ================== Global Models ==================
+plate_history = defaultdict(lambda: deque(maxlen=10))
+plate_final = {}
 model = YOLO('best.pt')  # model YOLO
 reader = easyocr.Reader(['en'], gpu=True)  # EasyOCR
 
@@ -46,7 +48,7 @@ regex_line1 = re.compile(r'^[0-9]{2}[A-Z]{1}[0-9]{1}$')
 regex_line2 = re.compile(r'^[0-9]{4,5}$')
 number_out = None
 
-def correct_plate_format(line1: str, line2: str, trang_thai: bool) -> str:
+def correct_plate_format(line1: str, line2: str, status: bool) -> str:
     """Chuẩn hoá định dạng biển số"""
     global number_out
     line1 = line1.strip().upper().replace(" ", "")
@@ -54,10 +56,10 @@ def correct_plate_format(line1: str, line2: str, trang_thai: bool) -> str:
     close = False
     if regex_line1.match(line1) and regex_line2.match(line2):
         if number_out == line2:
-            close = example_status(line1,line2, trang_thai)
+            close = example_status(line1,line2, status)
         else:
             number_out = line2
-            close = example_plate(line1,line2, trang_thai)
+            close = example_plate(line1,line2, status)
             
         if close == True:
             return ""
@@ -87,18 +89,18 @@ def correct_plate_format(line1: str, line2: str, trang_thai: bool) -> str:
     print("corrected2:", plates)
     if number_out == plates:
         number_out = plates
-        close = example_status(line1,plates, trang_thai)
+        close = example_status(line1,plates, status)
     else:
         print("Biển số hợp lệ:", plates)
         number_out = plates
-        close = example_plate(line1,number_out, trang_thai)
+        close = example_plate(line1,number_out, status)
     if close == True:
         return ""
     else:
         return "".join(corrected), "".join(corrected2)
 
 
-#
+# hàm 
 def preprocess_plate(plate_crop):
     gray = cv2.cvtColor(plate_crop, cv2.COLOR_BGR2GRAY)
     gray = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -119,7 +121,7 @@ def preprocess_plate(plate_crop):
 
     return cv2.resize(thresh, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
 #
-def recognize_plate(plate_crop):
+def recognize_plate(plate_crop,status):
     """OCR và trả về biển số hợp lệ"""
     if plate_crop.size == 0:
         return ""
@@ -134,7 +136,7 @@ def recognize_plate(plate_crop):
         if len(ocr_result) >= 2:
             l1 = ocr_result[0].replace(" ", "")
             l2 = ocr_result[1].replace(" ", "")
-            plate_text = correct_plate_format(l1, l2)
+            plate_text = correct_plate_format(l1, l2,status)
             if plate_text:
                 print(f"✅ ĐÃ NHẬN DẠNG ĐƯỢC BIỂN SỐ: {plate_text}")
             return plate_text
@@ -171,7 +173,7 @@ def draw_plate(frame, x1, y1, x2, y2, stable_text):
         cv2.putText(frame, stable_text, (text_x, text_y),
                     cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 3)  # chữ trắng
 # 
-def process_frame(frame, conf_thresh=0.3):
+def process_frame(frame,status, conf_thresh=0.3):
     """Xử lý 1 frame, trả về frame vẽ + danh sách biển số"""
     results = model(frame, verbose=False)
     detected_plates = []
@@ -190,7 +192,7 @@ def process_frame(frame, conf_thresh=0.3):
                 continue
 
             # OCR
-            text = recognize_plate(plate_crop)
+            text = recognize_plate(plate_crop,status)
             box_id = get_box_id(x1, y1, x2, y2)
             stable_text = get_stable_plate(box_id, text)
 

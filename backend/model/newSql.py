@@ -7,10 +7,8 @@ connection = MongoClient(uri)
 
 # Chọn database và collection
 db = connection["plates"]
-data = db["plates"]
+plates = db["plates"]
 
-parking = db["parking"]
-out = db["plates_out"]
 employees = db["employees"]
 
 # Thêm một bản ghi
@@ -33,126 +31,112 @@ employees = db["employees"]
 #xoá , xoá nhiều 
 # collection.delete_many({"color": "blue"})
 def error_status(doc, state):
-    if state==True:
+    if state=="Enter":
         doc["error"]= "xe đã vào trước đó"
-        data.insert_one(doc)
-        print("da vao")
+        plates.insert_one(doc)
     else:
         doc["error"]= "xe đã ra trước đó"
-        data.insert_one(doc)
-        print("da ra")
+        plates.insert_one(doc)
 
 def save_plate(doc, newdoc,status):
     document_id = doc["_id"]
     query = {"_id": document_id}  
     
     newdoc["time"] = datetime.utcnow()
-    newdoc["trang_thai"] = status
-    if status==True:
-        newdoc["statue"] = "vao"
-        newdoc["error"] = ""
-        parking.insert_one(newdoc)
-    else:
-        newdoc["statue"] = "ra"
-        newdoc["error"] = ""
-        delete_query = {"bien_so": doc["bien_so"]}
-        parking.delete_one(delete_query)
-    data.insert_one(newdoc)
-    update_op = {
-        "$set": {
-            "trang_thai": status,
-            "time_cap_nhat": datetime.utcnow() # Thêm trường thời gian cập nhật (tùy chọn)
-        }
-    }
-    employees.update_one(query, update_op)
-    print("da luu")
+    newdoc["error"]=""
+    newdoc["no_data"]="người lạ"
+    doc["status"] = status
 
-def noData_plate(line1,line2,trangthai):
+    plates.insert_one(newdoc)
+    employees.update_one(query, doc)
+
+def noData_plate(line1,line2,status):
     plate_number = int(line2)
     doc_new = {
-        "khu_vuc": line1,
-        "bien_so": plate_number,
+        "name":"",
+        "avatar":"",
+        "rank":"",
+        "position":"",
+        "plateArea": line1,
+        "plateNum": plate_number,
         "time": datetime.utcnow(),
-        "trang_thai": trangthai,
-        "infomation": "người lạ",
-        "error": ""
+        "status": status,
+        "no_data": "người lạ",
+        "note": ""
     }
-    if trangthai==True:
-        doc_new["statue"] = "vao"
-        parking.insert_one(doc_new)
-    else:
-        doc_new["statue"] = "ra"
-        delete_query = {"bien_so": doc_new["bien_so"]}
-        parking.delete_one(delete_query)
-    data.insert_one(doc_new)
 
-def example_plate(line1,line2,trangthai):
+    plates.insert_one(doc_new)
+
+def example_plate(line1,line2,status):
     plate_number = int(line2)
-    query = {"bien_so": plate_number}
+    query = {"plateNum": plate_number}
+    if status is True:
+        trang_thai = "Enter"
+    else:
+        trang_thai = "Out"
+
     doc = employees.find_one(query)
 
     if doc:
-        trang_thai = doc.get("trang_thai")
+        sta = doc.get("status")
         new_doc = doc.copy()
         if "_id" in new_doc:
             del new_doc["_id"]
         new_doc["time"] = datetime.utcnow()
-        if trang_thai==trangthai:
-            if trangthai==True:
-                error_status(new_doc, trang_thai)
-                return True
-            else:
-                error_status(new_doc, trang_thai)
-                return True
-        else:
-            save_plate(doc,new_doc, trangthai)
-
-    else:
-        query = {"bien_so": plate_number}
-        parking_doc = parking.find_one(query)
-        if parking_doc:
-            if trangthai==True:
-                return True
-            else:
-                noData_plate(line1,line2,trangthai)
-                return False
-        else:
-            if trangthai==True:
-                noData_plate(line1,line2,trangthai)
-                return False
-            else:
-                print("Biển số không tồn tại trong hệ thống.")
-                return True
-
-def example_status(line1,line2,trangthai):
-    plate_number = int(line2)
-    query = {"bien_so": plate_number}
-    doc = employees.find_one(query)
-
-    if doc:
-        new_doc = doc.copy()
-        if "_id" in new_doc:
-            del new_doc["_id"]
-        new_doc["time"] = datetime.utcnow()
-        trang_thai = doc.get("trang_thai")
-        
-        if trang_thai==trangthai:
+        if trang_thai==sta:
+            error_status(new_doc, trang_thai)
             return True
         else:
-            save_plate(doc,new_doc, trangthai)
+            save_plate(doc,new_doc, trang_thai)
             return False
+
     else:
-        query = {"bien_so": plate_number}
-        parking_doc = parking.find_one(query)
-        if parking_doc:
-            if trangthai==True:
+        no_plateData = plates.find_one(query, sort=[("time", -1)])
+        if no_plateData:
+            sta = no_plateData.get("status")
+            if sta==trang_thai:
+                error_status(no_plateData, trang_thai)
                 return True
             else:
-                noData_plate(line1,line2,trangthai)
+                noData_plate(line1,line2,trang_thai)
                 return False
         else:
-            if trangthai==True:
-                noData_plate(line1,line2,trangthai)
-                return False
-            else:
+            noData_plate(line1,line2,trang_thai)
+            return False
+
+def example_status(line1,line2,status):
+    plate_number = int(line2)
+    query = {"plateNum": plate_number}
+    doc = employees.find_one(query)
+    trang_thai = None
+    if status is True:
+        trang_thai == "Enter"
+    else :
+        trang_thai == "Out"
+
+    if doc:
+        new_doc = doc.copy()
+        if "_id" in new_doc:
+            del new_doc["_id"]
+        new_doc["time"] = datetime.utcnow()
+        Sta = doc.get("status")
+        
+        if trang_thai==Sta:
+            return True
+        else:
+            save_plate(doc,new_doc, trang_thai)
+            return False
+    else:
+        no_plateData = plates.find_one(query, sort=[("time", -1)])
+        if no_plateData:
+            Sta = no_plateData.get("status")
+            if Sta==trang_thai:
                 return True
+            else:
+                noData_plate(line1,line2,trang_thai)
+                return False
+        else:
+            noData_plate(line1,line2,trang_thai)
+            return False
+ 
+            
