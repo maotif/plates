@@ -4,7 +4,7 @@ from test_new_model import process_frame, CameraStream
 from pymongo import MongoClient
 from datetime import datetime
 from flask_cors import CORS
-from api import get_latest_10_data ,edit_home
+from api import get_latest_10_data ,edit_home,data_enter
 
 
 app = Flask(__name__)
@@ -134,13 +134,41 @@ def data_new():
     if data is None:
         return jsonify("không có data")
     return jsonify(data)
+
+@app.route("/status" , methods=["POST"])
+def data_new_status():
+    get_data = request.get_json(silent=True)
+    if get_data is None:
+        get_data = {}
+    status = get_data.get('status', 'Enter')  # Ví dụ: /status?status=Out
+    page = get_data.get('pageNB', 1)            # Ví dụ: /status?page=2
+    limit = get_data.get('limit', 10)
+    print(status)
+    try:
+        page_int = int(page)
+        limit_int = int(limit)
+    except ValueError:
+        return jsonify({"success": False, "message": "Tham số page và limit phải là số nguyên"}), 400
+    data = data_enter(status,page_int,limit_int)
+    if data is None:
+        return jsonify("không có data")
+    return jsonify(data)
+
 # edit information plates
 @app.route("/api/home/edit" , methods=["PUT"])
 def edit_inf_Home():
     data = request.json
-    end_edit = edit_home(data)
-    return jsonify(end_edit)
-
+    edit_home(data)
+    global get_data
+    get_newdata = get_latest_10_data()
+    return(get_newdata)
+@app.route("/api/home/status" , methods=["PUT"])
+def edit_sta_Home():
+    data = request.json
+    edit_home(data)
+    global get_data
+    get_newdata = get_latest_10_data()
+    return(get_newdata)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
