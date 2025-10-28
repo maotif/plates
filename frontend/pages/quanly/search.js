@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tr = document.createElement("tr");
     tr.dataset.search = "true";
     tr.innerHTML = `
-      <td>#</td>
+      <td><i class="m-r-10 mdi mdi-account-search" style="font-size:21px"></i></td>
       <td><input name="name" type="text" class="form-control" placeholder="Tên nhân viên" /></td>
       <td></td>
       <td><input name="rank" type="text" class="form-control" placeholder="Cấp bậc" /></td>
@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
         </select>
       </td>
       <td>
-        <a href="#" class="do-search-btn">Tìm kiếm</a>
-        <a href="#" class="cancel-search-btn">Xóa</a>
+        <a href="#" class="do-search-btn" style="padding:4px">Tìm kiếm</a>
+        <a href="#" class="cancel-search-btn" style="padding:4px">Xóa</a>
       </td>
     `;
     return tr;
@@ -96,8 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${escapeHtml(staff.plateNum || "")}</td>
             <td>${escapeHtml(staff.status || "")}</td>
             <td>
-              <a href="#" class="edit-btn">Edit</a>
-              <a href="#" class="delete-btn" data-id="${escapeHtml(
+              <a href="#" class="edit-btn" style="padding:4px">Edit</a>
+              <a href="#" class="delete-btn" style="padding:4px" data-id="${escapeHtml(
                 staff._id || ""
               )}">Delete</a>
             </td>

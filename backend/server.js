@@ -71,10 +71,31 @@ app.get("/quanly", (req, res) => {
 });
 
 // ✅ API: Test Lấy tất cả nhân viên
+// app.get("/api/staff", async (req, res) => {
+//   try {
+//     const staffList = await staffCollection.find().toArray();
+//     res.json(staffList);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 app.get("/api/staff", async (req, res) => {
   try {
     const staffList = await staffCollection.find().toArray();
-    res.json(staffList);
+
+    const fixedList = staffList.map((s) => ({
+      ...s,
+      avatar:
+        !s.avatar ||
+        s.avatar === "null" ||
+        s.avatar === "undefined" ||
+        s.avatar.trim() === ""
+          ? "/assets/images/users/guest.jpg"
+          : s.avatar,
+    }));
+
+    res.json(fixedList);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
@@ -151,20 +172,9 @@ app.post("/quanly/add", upload.single("avatar"), async (req, res) => {
       avatarPath = `/uploads/${req.file.filename}`;
     } else {
       // Nếu ko upload file, có thể gán default avatar
-      avatarPath = "/assets/images/default-avatar.png"; // hoặc để rỗng
+      avatarPath = `/uploads/guest.jpg`; // hoặc để file mặc định
     }
 
-    // const newStaff = {
-    //   name: name || "",
-    //   rank: rank || "",
-    //   position: position || "",
-    //   Plate: {
-    //     area,
-    //     number,
-    //   },
-    //   avatar: avatarPath,
-    //   createdAt: new Date(),
-    // };
     const newStaff = {
       name: name || "",
       rank: rank || "",
@@ -229,33 +239,6 @@ app.post("/quanly/search", async (req, res) => {
       .json({ success: false, message: "Lỗi server khi tìm kiếm" });
   }
 });
-
-// // ✅ SEARCH nhân viên
-// app.get("/quanly/search", async (req, res) => {
-//   try {
-//     const { name = "", position = "" } = req.query;
-
-//     // Tạo điều kiện tìm kiếm (case-insensitive)
-//     const query = {};
-
-//     if (name.trim() !== "") {
-//       query.name = { $regex: name, $options: "i" }; // tìm theo chuỗi con
-//     }
-
-//     if (position.trim() !== "") {
-//       query.position = { $regex: position, $options: "i" };
-//     }
-
-//     const results = await staffCollection.find(query).toArray();
-
-//     res.json({ success: true, results });
-//   } catch (err) {
-//     console.error("❌ Lỗi khi search:", err);
-//     res
-//       .status(500)
-//       .json({ success: false, message: "Lỗi server khi tìm kiếm" });
-//   }
-// });
 
 //
 // ✅ Chạy server

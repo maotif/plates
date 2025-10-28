@@ -12,38 +12,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tr.innerHTML = `
       <td>#</td>
-      <td><input name="name" type="text" class="form-control" value="${
+      <td><input name="name" type="text" class="form-control" placeholder="Tên nhân viên" value="${
         existing ? escapeHtml(existing.name || "") : ""
       }" /></td>
       <td>
-        ${
-          existing && existing.avatar
-            ? `<img src="${existing.avatar}" width="80" style="display:block;margin-bottom:6px">`
-            : ""
-        }
-        <input name="avatar" type="file" accept="image/*" />
+        <div class="avatar-wrapper" style="position: relative; display: inline-block; width: 80px; height: 80px;">
+          <img 
+            src="${
+              existing && existing.avatar
+                ? existing.avatar
+                : "/assets/images/users/guest.jpg"
+            }" 
+            class="avatar-preview" 
+            style="width:100%; height:100%; object-fit: cover; border-radius:8px; border:1px solid #ccc;"
+          >
+          <div class="change-overlay" 
+            style="position: absolute; top:0; left:0; width:100%; height:100%;
+                  display:flex; align-items:center; justify-content:center;
+                  background: rgba(0,0,0,0.6); color:white; font-size:20px;
+                  opacity:0; transition:0.3s; cursor:pointer; border-radius:8px;">
+            +
+          </div>
+          <input name="avatar" type="file" accept="image/*" style="display:none;">
+        </div>
       </td>
-      <td><input name="rank" type="text" class="form-control" value="${
+      <td><input name="rank" type="text" class="form-control" placeholder="Cấp bậc"  value="${
         existing ? escapeHtml(existing.rank || "") : ""
       }" /></td>
-      <td><input name="position" type="text" class="form-control" value="${
+      <td><input name="position" type="text" class="form-control" placeholder="Chức vụ" value="${
         existing ? escapeHtml(existing.position || "") : ""
       }" /></td>
       <td>
-        <div style="display:flex; gap:6px;">
-          <input name="area" type="text" class="form-control" placeholder="Mã khu vực (VD: 59A1)"
-            value="${
-              existing ? escapeHtml(existing.Plate?.area || "") : ""
-            }" style="width:50%" />
+        <div style="display:flex;">
+          <input name="area" type="text" class="form-control" placeholder="Mã khu vực (59A1)"
+            value="${existing ? escapeHtml(existing.Plate?.area || "") : ""}" />
 
         </div>
       </td>
       <td>
-        <div style="display:flex; gap:6px;">
-          <input name="number" type="text" class="form-control" placeholder="Số xe (VD: 12345)"
+        <div style="display:flex;">
+          <input name="number" type="text" class="form-control" placeholder="Số xe (12345)"
             value="${
               existing ? escapeHtml(existing.Plate?.number || "") : ""
-            }" style="width:50%" />
+            }" />
 
         </div>
       </td>
@@ -54,8 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
         </select>
       </td>
       <td>
-        <a href="#" class="save-btn">Save</a>
-        <a href="#" class="delete-btn">Delete</a>
+        <a href="#" class="save-btn" style="padding:4px">Save</a>
+        <a href="#" class="delete-btn" style="padding:4px">Delete</a>
       </td>
     `;
     return tr;
@@ -100,9 +111,42 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function attachRowHandlers(tr) {
+    // Xử lý ảnh preview
+    const avatarWrapper = tr.querySelector(".avatar-wrapper");
+    if (avatarWrapper) {
+      const overlay = avatarWrapper.querySelector(".change-overlay");
+      const fileInput = avatarWrapper.querySelector('input[name="avatar"]');
+      const imgPreview = avatarWrapper.querySelector(".avatar-preview");
+
+      // Hover effect
+      avatarWrapper.addEventListener(
+        "mouseenter",
+        () => (overlay.style.opacity = "1")
+      );
+      avatarWrapper.addEventListener(
+        "mouseleave",
+        () => (overlay.style.opacity = "0")
+      );
+
+      // Click để mở chọn file
+      overlay.addEventListener("click", () => fileInput.click());
+
+      // Khi chọn file -> preview liền
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            imgPreview.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+    // Nút Save và Xóa
     const saveBtn = tr.querySelector(".save-btn");
     const delBtn = tr.querySelector(".delete-btn");
-
+    // Nếu click SAVE
     saveBtn.addEventListener("click", async (e) => {
       e.preventDefault();
       // Lấy values và file
@@ -183,8 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
           saved.status || "None"
         )}</td>
   <td>
-    <a href="#" class="edit-btn">Edit</a>
-    <a href="#" class="delete-btn" data-id="${escapeHtml(
+    <a href="#" class="edit-btn" style="padding:4px">Edit</a>
+    <a href="#" class="delete-btn" style="padding:4px" data-id="${escapeHtml(
       displayRow.dataset.id || ""
     )}">Delete</a>
   </td>
@@ -332,128 +376,3 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 // ---------------------------------------------------------
-// Chỉ Thêm nhân viên (Ko edit + delete)
-// document.addEventListener("DOMContentLoaded", () => {
-//   const addBtn = document.getElementById("add-btn");
-//   const tbody = document.querySelector("table tbody");
-
-//   // Escape helper
-//   function escapeHtml(s = "") {
-//     return String(s).replace(
-//       /[&<>"']/g,
-//       (m) =>
-//         ({
-//           "&": "&amp;",
-//           "<": "&lt;",
-//           ">": "&gt;",
-//           '"': "&quot;",
-//           "'": "&#39;",
-//         }[m])
-//     );
-//   }
-
-//   addBtn.addEventListener("click", (e) => {
-//     e.preventDefault();
-
-//     // Nếu đang có hàng mới -> không thêm thêm
-//     if (tbody.querySelector("tr[data-new='true']")) return;
-
-//     const tr = document.createElement("tr");
-//     tr.dataset.new = "true";
-//     tr.innerHTML = `
-//       <td>#</td>
-//       <td><input name="name" type="text" placeholder="Tên nhân viên" /></td>
-//       <td><input name="avatar" type="file" accept="image/*" /></td>
-//       <td><input name="rank" type="text" placeholder="Cấp bậc" /></td>
-//       <td><input name="position" type="text" placeholder="Chức vụ" /></td>
-//       <td><input name="plateArea" type="text" placeholder="Mã KV (VD: 59A1)" /></td>
-//       <td><input name="plateNum" type="text" placeholder="Số xe" /></td>
-//       <td>
-//         <select name="status">
-//           <option value="Enter">Enter</option>
-//           <option value="Out">Out</option>
-//         </select>
-//       </td>
-//       <td>
-//         <a href="#" class="save-btn">Save</a>
-//         <a href="#" class="cancel-btn">Cancel</a>
-//       </td>
-//     `;
-//     tbody.prepend(tr);
-
-//     const saveBtn = tr.querySelector(".save-btn");
-//     const cancelBtn = tr.querySelector(".cancel-btn");
-
-//     cancelBtn.addEventListener("click", (e) => {
-//       e.preventDefault();
-//       tr.remove();
-//     });
-
-//     saveBtn.addEventListener("click", async (e) => {
-//       e.preventDefault();
-
-//       const fd = new FormData();
-//       ["name", "rank", "position", "plateArea", "plateNum", "status"].forEach(
-//         (f) => {
-//           fd.append(f, tr.querySelector(`[name="${f}"]`).value.trim());
-//         }
-//       );
-
-//       const fileInput = tr.querySelector('[name="avatar"]');
-//       if (fileInput.files[0]) fd.append("avatar", fileInput.files[0]);
-
-//       try {
-//         const res = await fetch("/quanly/add", { method: "POST", body: fd });
-//         const data = await res.json();
-
-//         if (!res.ok || !data.success) {
-//           alert(data.message || "Thêm nhân viên thất bại");
-//           return;
-//         }
-
-//         const s = data.staff;
-//         const newTr = document.createElement("tr");
-//         newTr.dataset.id = s._id;
-//         newTr.innerHTML = `
-//           <td></td>
-//           <td data-original="${escapeHtml(s.name)}">${escapeHtml(s.name)}</td>
-//           <td class="avatar-cell">
-//             <div class="avatar-wrapper" style="position:relative; display:inline-block;">
-//               <img src="${escapeHtml(
-//                 s.avatar || ""
-//               )}" width="80" class="avatar-img" style="border-radius:8px; object-fit:cover;">
-//               <div class="change-overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); color:white; opacity:0; transition:0.3s; cursor:pointer;">+</div>
-//             </div>
-//           </td>
-//           <td data-original="${escapeHtml(s.rank)}">${escapeHtml(s.rank)}</td>
-//           <td data-original="${escapeHtml(s.position)}">${escapeHtml(
-//           s.position
-//         )}</td>
-//           <td data-original="${escapeHtml(s.plateArea || "")}">${escapeHtml(
-//           s.plateArea || ""
-//         )}</td>
-//           <td data-original="${escapeHtml(s.plateNum || "")}">${escapeHtml(
-//           s.plateNum || ""
-//         )}</td>
-//           <td data-original="${escapeHtml(s.status || "None")}">${escapeHtml(
-//           s.status || "None"
-//         )}</td>
-//           <td>
-//             <a href="#" class="edit-btn">Edit</a>
-//             <a href="#" class="delete-btn" data-id="${escapeHtml(
-//               s._id
-//             )}">Delete</a>
-//           </td>
-//         `;
-
-//         tr.replaceWith(newTr);
-//         if (typeof window.attachQuanLyRowHandlers === "function") {
-//           window.attachQuanLyRowHandlers(newTr);
-//         }
-//       } catch (err) {
-//         console.error(err);
-//         alert("Lỗi mạng khi thêm nhân viên");
-//       }
-//     });
-//   });
-// });
