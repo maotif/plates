@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
         </select>
       </td>
       <td>
-        <a href="#" class="do-search-btn" style="padding:4px">Tìm kiếm</a>
-        <a href="#" class="cancel-search-btn" style="padding:4px">Xóa</a>
+        <a href="#" class="do-search-btn" style="padding:5px">Search</a>
+        <a href="#" class="cancel-search-btn" style="padding:5px">Clear</a>
       </td>
     `;
     return tr;
@@ -117,7 +117,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cancelBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      tr.remove();
+      // Xóa hết nội dung trong các ô input và reset select
+      tr.querySelectorAll("input").forEach((input) => (input.value = ""));
+      tr.querySelector('select[name="status"]').value = "All";
     });
   }
 

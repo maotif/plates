@@ -242,8 +242,15 @@ a:hover {
 a.edit-btn:hover {
   text-decoration: underline;
 }
+a.do-search-btn:hover {
+  text-decoration: underline;
+}
 
 a.delete-btn:hover {
+  color: red !important;
+  text-decoration: underline;
+}
+a.cancel-search-btn:hover {
   color: red !important;
   text-decoration: underline;
 }
