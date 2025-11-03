@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
             src="${
               existing && existing.avatar
                 ? existing.avatar
-                : "/assets/images/users/guest.jpg"
+                : "http://127.0.0.1:5001/assets/images/users/guest.jpg"
             }" 
             class="avatar-preview" 
             style="width:100%; height:100%; object-fit: cover; border-radius:8px; border:1px solid #ccc;"
