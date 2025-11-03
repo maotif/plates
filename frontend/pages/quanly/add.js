@@ -60,8 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
       </td>
       <td>
         <select name="status">
-          <option value="Enter">Vào</option>
-          <option value="Out">Ra</option>
+          <option value="Vào">Vào</option>
+          <option value="Ra">Ra</option>
         </select>
       </td>
       <td>
@@ -227,10 +227,10 @@ document.addEventListener("DOMContentLoaded", () => {
           saved.status || "None"
         )}</td>
   <td>
-    <a href="#" class="edit-btn" style="padding:4px">Edit</a>
-    <a href="#" class="delete-btn" style="padding:4px" data-id="${escapeHtml(
+    <a href="#" class="btn btn-primary edit-btn" style="padding:8px 16px; margin-bottom:4px">Sửa</a>
+    <a href="#" class="btn btn-danger delete-btn" style="padding:8px 16px; margin-bottom:4px" data-id="${escapeHtml(
       displayRow.dataset.id || ""
-    )}">Delete</a>
+    )}">Xóa</a>
   </td>
 `;
 

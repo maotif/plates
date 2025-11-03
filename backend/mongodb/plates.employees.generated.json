@@ -9,7 +9,7 @@
     "position": "Nhân viên",
     "plateArea": "59E5",
     "plateNum": 5678,
-    "status": "Enter",
+    "status": "Vào",
     "error": false,
     "note": "",
     "time": {
@@ -27,7 +27,7 @@
     "position": "Giám sát",
     "plateArea": "59A1",
     "plateNum": "12345",
-    "status": "Out",
+    "status": "Ra",
     "error": false,
     "note": "",
     "time": {
@@ -45,7 +45,7 @@
     "position": "Giám sát",
     "plateArea": "59E5",
     "plateNum": 56789,
-    "status": "Enter",
+    "status": "Vào",
     "error": true,
     "note": "Xe đã vào trước đó",
     "time": {
@@ -63,7 +63,7 @@
     "position": "Nhân viên",
     "plateArea": "59E5",
     "plateNum": 56789,
-    "status": "Out",
+    "status": "Ra",
     "error": true,
     "note": "Xe đã ra trước đó",
     "time": {
@@ -81,7 +81,7 @@
     "position": "Nhân viên",
     "plateArea": "59A1",
     "plateNum": 12345,
-    "status": "Enter",
+    "status": "Vào",
     "error": true,
     "note": "",
     "time": {
@@ -99,7 +99,7 @@
     "position": "Nhân viên",
     "plateArea": "59E5",
     "plateNum": 56789,
-    "status": "Enter",
+    "status": "Vào",
     "error": false,
     "note": "",
     "time": {
@@ -117,7 +117,7 @@
     "position": "Giám đốc",
     "plateArea": "59A1",
     "plateNum": 12345,
-    "status": "Enter",
+    "status": "Vào",
     "error": false,
     "note": "",
     "time": {
@@ -135,7 +135,7 @@
     "position": "Giám sát",
     "plateArea": "59E5",
     "plateNum": 56789,
-    "status": "Out",
+    "status": "Ra",
     "error": false,
     "note": "Xe đã ra trước đó",
     "time": {
@@ -153,7 +153,7 @@
     "position": "Nhân viên",
     "plateArea": "59B2",
     "plateNum": 23456,
-    "status": "Out",
+    "status": "Ra",
     "error": false,
     "note": "Xe đã ra trước đó",
     "time": {
@@ -171,7 +171,7 @@
     "position": "Nhân viên",
     "plateArea": "59D4",
     "plateNum": 45678,
-    "status": "Enter",
+    "status": "Vào",
     "error": false,
     "note": "Xe đã vào trước đó",
     "time": {

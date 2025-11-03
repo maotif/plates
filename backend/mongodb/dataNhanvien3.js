@@ -39,7 +39,7 @@ const avatars = [
   "/assets/images/users/8.jpg",
 ];
 
-const statuses = ["Enter", "Out"]; // 2 khả năng
+const statuses = ["Vào", "Ra"]; // 2 khả năng
 
 async function generateData() {
   try {

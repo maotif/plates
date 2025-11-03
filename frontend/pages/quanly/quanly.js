@@ -96,12 +96,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (key === "status") {
               td.innerHTML = `
               <select>
-                <option value="Enter" ${
-                  td.textContent.trim() === "Enter" ? "selected" : ""
-                }>Enter</option>
-                <option value="Out" ${
-                  td.textContent.trim() === "Out" ? "selected" : ""
-                }>Out</option>
+                <option value="Vào" ${
+                  td.textContent.trim() === "Vào" ? "selected" : ""
+                }>Vào</option>
+                <option value="Ra" ${
+                  td.textContent.trim() === "Ra" ? "selected" : ""
+                }>Ra</option>
               </select>
             `;
             } else {
@@ -288,12 +288,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (key === "status") {
               td.innerHTML = `
               <select>
-                <option value="Enter" ${
-                  td.textContent.trim() === "Enter" ? "selected" : ""
-                }>Enter</option>
-                <option value="Out" ${
-                  td.textContent.trim() === "Out" ? "selected" : ""
-                }>Out</option>
+                <option value="Vào" ${
+                  td.textContent.trim() === "Vào" ? "selected" : ""
+                }>Vào</option>
+                <option value="Ra" ${
+                  td.textContent.trim() === "Ra" ? "selected" : ""
+                }>Ra</option>
               </select>`;
             } else {
               td.innerHTML = `<input type="text" value="${td.textContent.trim()}" />`;

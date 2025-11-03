@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <td>
         <select name="status" class="form-control">
           <option value="All">Tất cả</option>
-          <option value="Enter">Enter</option>
-          <option value="Out">Out</option>
+          <option value="Vào">Vào</option>
+          <option value="Ra">Ra</option>
         </select>
       </td>
       <td>
