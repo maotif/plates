@@ -246,19 +246,6 @@ a.do-search-btn:hover {
   text-decoration: underline;
 }
 
-a.delete-btn:hover {
-  color: red !important;
-  text-decoration: underline;
-}
-a.cancel-search-btn:hover {
-  color: red !important;
-  text-decoration: underline;
-}
-a.save-btn:hover {
-  color: green !important;
-  text-decoration: underline;
-}
-
 a:not([href]):not([tabindex]) {
   color: inherit;
   text-decoration: none;

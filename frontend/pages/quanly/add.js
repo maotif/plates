@@ -60,13 +60,13 @@ document.addEventListener("DOMContentLoaded", () => {
       </td>
       <td>
         <select name="status">
-          <option value="Enter">Enter</option>
-          <option value="Out">Out</option>
+          <option value="Enter">Vào</option>
+          <option value="Out">Ra</option>
         </select>
       </td>
       <td>
-        <a href="#" class="save-btn" style="padding:4px">Save</a>
-        <a href="#" class="delete-btn" style="padding:4px">Delete</a>
+        <a href="#" class="btn btn-success save-btn" style="padding:8px 16px; margin-bottom:4px">Lưu</a>
+        <a href="#" class="btn btn-danger delete-btn" style="padding:8px 16px;  margin-bottom:4px">Xóa</a>
       </td>
     `;
     return tr;
@@ -199,9 +199,9 @@ document.addEventListener("DOMContentLoaded", () => {
         )}</td>
   <td class="avatar-cell">
     <div class="avatar-wrapper" style="position: relative; display: inline-block;">
-      <img src="${escapeHtml(
+      <img src="http://127.0.0.1:5001${escapeHtml(
         saved.avatar || ""
-      )}" width="80" class="avatar-img" style="border-radius:8px; object-fit:cover;">
+      )}" width="80" class="avatar-img" style="border-radius:8px; object-fit:cover; width: 80px; height: 80px;">
       <div class="change-overlay"
           style="position:absolute; top:0; left:0; width:100%; height:100%;
                   display:flex; align-items:center; justify-content:center;

@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="avatar-wrapper" style="position: relative; display: inline-block;">
             <img src="http://127.0.0.1:5001${
               s.avatar
-            }" width="80" class="avatar-img" style="border-radius: 8px; object-fit: cover;">
+            }" width="80" class="avatar-img" style="border-radius: 8px; object-fit: cover; width: 80px; height: 80px;">
             <div class="change-overlay" 
                 style="position: absolute; top:0; left:0; width:100%; height:100%; 
                         display:flex; align-items:center; justify-content:center; 
@@ -36,10 +36,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td data-original="${s.plateNum || ""}">${s.plateNum || ""}</td>
         <td data-original="${s.status || "None"}">${s.status || "None"}</td>
         <td>
-          <a href="#" class="btn btn-primary edit-btn" style="padding:8px 16px">Edit</a>
-          <a href="#" class="btn btn-danger delete-btn" style="padding:8px 16px" data-id="${
+          <a href="#" class="btn btn-primary edit-btn" style="padding:8px 16px; margin-bottom:4px">Sửa</a>
+          <a href="#" class="btn btn-danger delete-btn" style="padding:8px 16px; margin-bottom:4px" data-id="${
             s._id
-          }">Delete</a>
+          }">Xóa</a>
         </td>
       </tr>
     `

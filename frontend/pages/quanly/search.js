@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
         </select>
       </td>
       <td>
-        <a href="#" class="do-search-btn" style="padding:5px">Search</a>
-        <a href="#" class="cancel-search-btn" style="padding:5px">Clear</a>
+        <a href="#" class="btn btn-primary do-search-btn" style="padding:8px 16px; margin-bottom:4px">Tìm kiếm</a>
+        <a href="#" class="btn btn-danger cancel-search-btn" style="padding:8px 16px; margin-bottom:4px">Clear</a>
       </td>
     `;
     return tr;
@@ -87,19 +87,19 @@ document.addEventListener("DOMContentLoaded", () => {
           newRow.innerHTML = `
             <td>${index + 1}</td>
             <td>${escapeHtml(staff.name || "")}</td>
-            <td><img src="${escapeHtml(
+            <td><img src="http://127.0.0.1:5001${escapeHtml(
               staff.avatar || ""
-            )}" width="80" style="border-radius:8px;object-fit:cover"></td>
+            )}" width="80" style="border-radius:8px;object-fit:cover;  width: 80px; height: 80px;"></td>
             <td>${escapeHtml(staff.rank || "")}</td>
             <td>${escapeHtml(staff.position || "")}</td>
             <td>${escapeHtml(staff.plateArea || "")}</td>
             <td>${escapeHtml(staff.plateNum || "")}</td>
             <td>${escapeHtml(staff.status || "")}</td>
             <td>
-              <a href="#" class="edit-btn" style="padding:4px">Edit</a>
-              <a href="#" class="delete-btn" style="padding:4px" data-id="${escapeHtml(
+              <a href="#" class="btn btn-primary edit-btn" style="padding:8px 16px">Sửa</a>
+              <a href="#" class="btn btn-danger delete-btn" style="padding:8px 16px" data-id="${escapeHtml(
                 staff._id || ""
-              )}">Delete</a>
+              )}">Xóa</a>
             </td>
           `;
           tbody.appendChild(newRow);
