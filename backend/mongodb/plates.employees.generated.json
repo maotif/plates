@@ -8,12 +8,12 @@
     "rank": "Chuyên gia",
     "position": "Nhân viên",
     "plateArea": "59E5",
-    "plateNum": "5678",
+    "plateNum": 5678,
     "status": "Enter",
     "error": false,
     "note": "",
     "time": {
-      "$date": "2025-10-26T15:41:01.258461+00:00"
+      "$date": "2025-11-03T12:08:34.513129+00:00"
     },
     "no_data": "người lạ"
   },
@@ -29,11 +29,11 @@
     "plateNum": "12345",
     "status": "Out",
     "error": false,
-    "note": "Xe đã ra trước đó",
+    "note": "",
     "time": {
-      "$date": "2025-10-26T15:56:01.258461+00:00"
+      "$date": "2025-11-03T11:15:34.513176+00:00"
     },
-    "no_data": ""
+    "no_data": "người lạ"
   },
   {
     "_id": {
@@ -44,14 +44,14 @@
     "rank": "Chuyên gia",
     "position": "Giám sát",
     "plateArea": "59E5",
-    "plateNum": "56789",
+    "plateNum": 56789,
     "status": "Enter",
     "error": true,
     "note": "Xe đã vào trước đó",
     "time": {
-      "$date": "2025-10-26T17:07:01.258461+00:00"
+      "$date": "2025-11-03T12:09:34.513188+00:00"
     },
-    "no_data": "người lạ"
+    "no_data": ""
   },
   {
     "_id": {
@@ -62,14 +62,14 @@
     "rank": "Trung cấp",
     "position": "Nhân viên",
     "plateArea": "59E5",
-    "plateNum": "56789",
+    "plateNum": 56789,
     "status": "Out",
     "error": true,
     "note": "Xe đã ra trước đó",
     "time": {
-      "$date": "2025-10-26T17:13:01.258461+00:00"
+      "$date": "2025-11-03T11:46:34.513195+00:00"
     },
-    "no_data": "người lạ"
+    "no_data": ""
   },
   {
     "_id": {
@@ -80,14 +80,14 @@
     "rank": "Cao cấp",
     "position": "Nhân viên",
     "plateArea": "59A1",
-    "plateNum": "12345",
+    "plateNum": 12345,
     "status": "Enter",
     "error": true,
     "note": "",
     "time": {
-      "$date": "2025-10-26T15:50:01.258461+00:00"
+      "$date": "2025-11-03T11:37:34.513201+00:00"
     },
-    "no_data": ""
+    "no_data": "người lạ"
   },
   {
     "_id": {
@@ -98,14 +98,14 @@
     "rank": "Chuyên gia",
     "position": "Nhân viên",
     "plateArea": "59E5",
-    "plateNum": "56789",
+    "plateNum": 56789,
     "status": "Enter",
     "error": false,
-    "note": "Xe đã vào trước đó",
+    "note": "",
     "time": {
-      "$date": "2025-10-26T17:07:01.258461+00:00"
+      "$date": "2025-11-03T11:57:34.513206+00:00"
     },
-    "no_data": ""
+    "no_data": "người lạ"
   },
   {
     "_id": {
@@ -116,14 +116,14 @@
     "rank": "Trung cấp",
     "position": "Giám đốc",
     "plateArea": "59A1",
-    "plateNum": "12345",
+    "plateNum": 12345,
     "status": "Enter",
     "error": false,
-    "note": "Xe đã vào trước đó",
+    "note": "",
     "time": {
-      "$date": "2025-10-26T16:49:01.258461+00:00"
+      "$date": "2025-11-03T12:10:34.513211+00:00"
     },
-    "no_data": ""
+    "no_data": "người lạ"
   },
   {
     "_id": {
@@ -134,12 +134,12 @@
     "rank": "Trung cấp",
     "position": "Giám sát",
     "plateArea": "59E5",
-    "plateNum": "56789",
+    "plateNum": 56789,
     "status": "Out",
     "error": false,
-    "note": "",
+    "note": "Xe đã ra trước đó",
     "time": {
-      "$date": "2025-10-26T17:14:01.258461+00:00"
+      "$date": "2025-11-03T11:05:34.513218+00:00"
     },
     "no_data": "người lạ"
   },
@@ -152,14 +152,14 @@
     "rank": "Trung cấp",
     "position": "Nhân viên",
     "plateArea": "59B2",
-    "plateNum": "23456",
+    "plateNum": 23456,
     "status": "Out",
     "error": false,
     "note": "Xe đã ra trước đó",
     "time": {
-      "$date": "2025-10-26T16:10:01.258461+00:00"
+      "$date": "2025-11-03T11:24:34.513224+00:00"
     },
-    "no_data": ""
+    "no_data": "người lạ"
   },
   {
     "_id": {
@@ -170,13 +170,13 @@
     "rank": "Sơ cấp",
     "position": "Nhân viên",
     "plateArea": "59D4",
-    "plateNum": "45678",
+    "plateNum": 45678,
     "status": "Enter",
     "error": false,
-    "note": "",
+    "note": "Xe đã vào trước đó",
     "time": {
-      "$date": "2025-10-26T15:22:01.258461+00:00"
+      "$date": "2025-11-03T11:23:34.513232+00:00"
     },
-    "no_data": "người lạ"
+    "no_data": ""
   }
 ]

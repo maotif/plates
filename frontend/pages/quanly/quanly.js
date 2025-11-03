@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td data-original="${s.name}">${s.name}</td>
         <td class="avatar-cell">
           <div class="avatar-wrapper" style="position: relative; display: inline-block;">
-            <img src="${
+            <img src="http://127.0.0.1:5001${
               s.avatar
             }" width="80" class="avatar-img" style="border-radius: 8px; object-fit: cover;">
             <div class="change-overlay" 
